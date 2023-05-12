@@ -1,2 +1,5 @@
-<h1>Welcome to SvelteKit</h1>
-<p>Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the documentation</p>
+<p>
+    <a href="/todo">Move to To-do List</a>
+    <button class="btn"></button>
+    <input class="input input-bordered" />
+</p>
