@@ -36,21 +36,21 @@ const createList = () => {
 	};
 };
 
-const createAlert = () => {
-	const initialAlertInfo = {
+const createToast = () => {
+	const initialToastInfo = {
 		isOpen: false,
 		message: ''
 	};
-	const { subscribe, set, update } = writable(initialAlertInfo);
+	const { subscribe, set, update } = writable(initialToastInfo);
 
 	return {
 		subscribe,
-		showAlert: (message: string) => {
+		showToast: (message: string) => {
 			update(() => ({ message, isOpen: true }));
 		},
-		closeAlert: () => set(initialAlertInfo)
+		closeToast: () => set(initialToastInfo)
 	};
 };
 
 export const list = createList();
-export const alert = createAlert();
+export const toast = createToast();
