@@ -4,14 +4,9 @@
 	import { list } from '$lib/stores';
 </script>
 
-<main>
-	<div>
-		<InputForm />
-	</div>
-	<div>
-		<TodoList data={$list} />
-	</div>
-	<div>
-		<button on:click={() => list.resetList()} class="btn btn-sm mt-5">Clear</button>
-	</div>
-</main>
+<div class="container px-4 mx-auto">
+	<InputForm />
+	<TodoList data={$list} />
+
+	<button on:click={() => list.resetList()} class="btn btn-sm mt-5">Clear</button>
+</div>
