@@ -5,8 +5,8 @@
 
 	export let item: ITodoItem;
 
-	$: ({ id, title, content, isCompleted = false } = item);
-	$: currentItem = { id, title, content, isCompleted };
+	$: ({ id, title, content, isCompleted = false, status } = item);
+	$: currentItem = { id, title, content, isCompleted, status };
 
 	let isEditable = false;
 
@@ -16,7 +16,8 @@
 		const updatedData = {
 			id: currentItem.id,
 			title: currentItem.title,
-			content: currentItem.content
+			content: currentItem.content,
+			status: currentItem.status
 		};
 
 		list.updateItem(updatedData);
@@ -57,15 +58,19 @@
 				class="input input-sm input-bordered"
 			/>
 		{:else}
-			<h3 class="card-title">{item.title}</h3>
-			<p class={item?.isCompleted ? 'line-through' : ''}>
-				{item.content}
-				{#if !item.isCompleted}
-					<button on:click={() => toggleCompleted(item)}>⬜️</button>
-				{:else}
-					<button on:click={() => toggleCompleted(item)}>✅</button>
-				{/if}
-			</p>
+			<p class="card-title">{item.title}</p>
+			{#if item.status === 'upcoming'}
+				<p>{item.content}</p>
+			{:else}
+				<p class={item?.isCompleted ? 'line-through truncate' : 'truncate'}>
+					{#if !item.isCompleted}
+						<button class="mr-1" on:click={() => toggleCompleted(item)}>⬜️</button>
+					{:else}
+						<button class="mr-1" on:click={() => toggleCompleted(item)}>✅</button>
+					{/if}
+					{item.content}
+				</p>
+			{/if}
 		{/if}
 		<div>
 			{#if isEditable}

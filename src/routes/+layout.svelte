@@ -5,7 +5,5 @@
 	import '../app.postcss';
 </script>
 
-<div class="container mx-auto px-4">
-	<slot />
-</div>
+<slot />
 <Toast />

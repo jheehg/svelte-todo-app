@@ -1,5 +1,6 @@
 <script lang="ts">
-	import { list } from '$lib/stores';
+	import { isModalOpen, list, status } from '$lib/stores';
+	import type { Status } from '$lib/types';
 
 	const id = -1;
 	let title: string = '';
@@ -9,17 +10,20 @@
 		const newTodoData = {
 			id,
 			title,
-			content
+			content,
+			status: $status as Status
 		};
 		list.createItem(newTodoData);
 
 		title = '';
 		content = '';
+		isModalOpen.set(false);
 	};
 </script>
 
-<div>
-	<form on:submit|preventDefault={createTodo} class="mb-7 w-full max-w-md">
+<div class="w-full max-w-md">
+	<h1 class="font-bold my-2">New Item</h1>
+	<form on:submit|preventDefault={createTodo}>
 		<div class="form-control">
 			<label class="label" for="title">
 				<span class="label-text">Title</span>
@@ -41,7 +45,7 @@
 				placeholder="Content here"
 				class="input input-bordered input-sm w-full"
 			/>
-			<button type="submit" class="btn btn-sm mt-2">add</button>
+			<button type="submit" class="btn btn-sm my-4">add</button>
 		</div>
 	</form>
 </div>

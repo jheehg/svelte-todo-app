@@ -3,7 +3,7 @@ import type { ITodoItem } from '$lib/types';
 import { writable } from 'svelte/store';
 
 const createList = () => {
-	const { subscribe, set, update } = writable(data);
+	const { subscribe, update } = writable(data);
 
 	return {
 		subscribe,
@@ -32,7 +32,11 @@ const createList = () => {
 			});
 		},
 		deleteItem: (targetId: number) => update((prev) => prev.filter((item) => item.id !== targetId)),
-		resetList: () => set([])
+		resetList: (status: string) => {
+			update((prev) => {
+				return prev.filter((item) => item.status !== status);
+			});
+		}
 	};
 };
 
@@ -54,3 +58,5 @@ const createToast = () => {
 
 export const list = createList();
 export const toast = createToast();
+export const status = writable('');
+export const isModalOpen = writable(false);
