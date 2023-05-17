@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { ITodoItem } from '$lib/types';
+	import type { ITodoItem, Status } from '$lib/types';
 	import { list } from '$lib/stores';
 	import { toast } from '$lib/stores';
 
@@ -34,9 +34,11 @@
 	};
 
 	const toggleCompleted = (item: ITodoItem) => {
+		const updateStatus = !item?.isCompleted;
 		const updatedData = {
 			id,
-			isCompleted: !item?.isCompleted
+			isCompleted: updateStatus,
+			status: (updateStatus ? 'done' : 'progress') as Status
 		};
 		list.updateItem(updatedData);
 	};
