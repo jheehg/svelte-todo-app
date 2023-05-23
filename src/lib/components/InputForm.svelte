@@ -1,23 +1,41 @@
 <script lang="ts">
-	import { isModalOpen, list, status } from '$lib/stores';
+	import { isModalOpen, status as statusStore, toast } from '$lib/stores';
 	import type { Status } from '$lib/types';
+	import { createEventDispatcher } from 'svelte';
 
 	const id = -1;
 	let title: string = '';
 	let content: string = '';
 
-	const createTodo = () => {
+	const dispatch = createEventDispatcher();
+
+	const createTodo = async () => {
 		const newTodoData = {
 			id,
 			title,
 			content,
-			status: $status as Status
+			status: $statusStore as Status
 		};
-		list.createItem(newTodoData);
 
-		title = '';
-		content = '';
-		isModalOpen.set(false);
+		await fetch('/api/todo/create', {
+			method: 'POST',
+			body: JSON.stringify(newTodoData),
+			headers: {
+				'content-type': 'application/json'
+			}
+		})
+			.then((response) => response.json())
+			.then(({ result }) => {
+				if (result === 'success') {
+					title = '';
+					content = '';
+					isModalOpen.set(false);
+					toast.showToast('Created');
+					dispatch('fetchTodo');
+				} else {
+					toast.showToast('Failed');
+				}
+			});
 	};
 </script>
 

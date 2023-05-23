@@ -2,45 +2,90 @@
 	import type { ITodoItem, Status } from '$lib/types';
 	import { list } from '$lib/stores';
 	import { toast } from '$lib/stores';
+	import { createEventDispatcher } from 'svelte';
 
 	export let item: ITodoItem;
 
-	$: ({ id, title, content, isCompleted = false, status } = item);
-	$: currentItem = { id, title, content, isCompleted, status };
+	$: ({ id, title, content, is_completed = false, status } = item);
+	$: currentItem = { id, title, content, is_completed, status };
 
 	let isEditable = false;
 
+	const dispatch = createEventDispatcher();
+
 	const toggleMode = () => (isEditable = !isEditable);
 
-	const updateTodo = () => {
+	const updateTodo = async () => {
 		const updatedData = {
 			id: currentItem.id,
 			title: currentItem.title,
 			content: currentItem.content,
 			status: currentItem.status
 		};
-
-		list.updateItem(updatedData);
-		toast.showToast('Item has been saved!');
-		isEditable = false;
+		await fetch('/api/todo/update', {
+			method: 'POST',
+			body: JSON.stringify(updatedData),
+			headers: {
+				'content-type': 'application/json'
+			}
+		})
+			.then((response) => response.json())
+			.then(({ result }) => {
+				if (result === 'success') {
+					toast.showToast('Updated');
+					isEditable = false;
+					dispatch('fetchTodo');
+				} else {
+					toast.showToast('Failed');
+				}
+			});
 	};
 
-	const deleteTodo = () => {
-		list.deleteItem(currentItem.id);
+	const deleteTodo = async () => {
+		const data = await fetch('/api/todo/delete', {
+			method: 'DELETE',
+			body: JSON.stringify({ targetId: currentItem.id }),
+			headers: {
+				'content-type': 'application/json'
+			}
+		});
+		const { result } = await data.json();
+		if (result !== 'success') {
+			toast.showToast('fail');
+			return;
+		}
+
 		toast.showToast('Item has been deleted!');
+		dispatch('fetchTodo');
+
 		if (isEditable) {
 			isEditable = false;
 		}
 	};
 
-	const toggleCompleted = (item: ITodoItem) => {
-		const updateStatus = !item?.isCompleted;
+	const toggleCompleted = async (item: ITodoItem) => {
+		const updateStatus = !item?.is_completed;
 		const updatedData = {
 			id,
-			isCompleted: updateStatus,
+			is_completed: updateStatus,
 			status: (updateStatus ? 'done' : 'progress') as Status
 		};
-		list.updateItem(updatedData);
+		console.log(updatedData);
+		await fetch('/api/todo/update', {
+			method: 'POST',
+			body: JSON.stringify(updatedData),
+			headers: {
+				'content-type': 'application/json'
+			}
+		})
+			.then((response) => response.json())
+			.then(({ result }) => {
+				if (result === 'success') {
+					dispatch('fetchTodo');
+				} else {
+					toast.showToast('Failed');
+				}
+			});
 	};
 </script>
 
@@ -64,8 +109,8 @@
 			{#if item.status === 'upcoming'}
 				<p>{item.content}</p>
 			{:else}
-				<p class={item?.isCompleted ? 'line-through truncate' : 'truncate'}>
-					{#if !item.isCompleted}
+				<p class={item?.is_completed ? 'line-through truncate' : 'truncate'}>
+					{#if !item.is_completed}
 						<button class="mr-1" on:click={() => toggleCompleted(item)}>⬜️</button>
 					{:else}
 						<button class="mr-1" on:click={() => toggleCompleted(item)}>✅</button>
