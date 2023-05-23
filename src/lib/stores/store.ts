@@ -3,9 +3,10 @@ import type { ITodoItem } from '$lib/types';
 import { writable } from 'svelte/store';
 
 const createList = () => {
-	const { subscribe, update } = writable(data);
+	const { subscribe, update, set } = writable(data);
 
 	return {
+		set,
 		subscribe,
 		updateItem: (updatedItem: Partial<ITodoItem>) => {
 			update((prev) => {
@@ -27,7 +28,7 @@ const createList = () => {
 			update((prev) => {
 				const newId = prev.length > 0 ? prev[prev.length - 1].id + 1 : 0;
 				newItem.id = newId;
-				newItem.isCompleted = false;
+				newItem.is_completed = false;
 				return [...prev, newItem];
 			});
 		},
