@@ -9,11 +9,8 @@
 
 	export let data: { todo: ITodoItem[] };
 
-	// let { todo } = data;
-	// $: ({ todo } = data);
-
 	onMount(() => {
-		list.set(data?.todo);
+		list.set(data.todo);
 	});
 
 	let todoInfo: {
@@ -59,8 +56,6 @@
 	</div>
 </div>
 
-{#if $isModalOpen}
-	<Modal>
-		<InputForm on:fetchTodo={fetchTodo} />
-	</Modal>
-{/if}
+<Modal>
+	<InputForm on:fetchTodo={fetchTodo} />
+</Modal>

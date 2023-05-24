@@ -43,10 +43,9 @@
 	<h3 class="font-bold text-zinc-400">Total: {list.length}</h3>
 
 	{#if list.length > 0}
-		<!-- svelte-ignore a11y-click-events-have-key-events -->
-		<div on:click={() => resetList(statusType)} class="absolute top-6 right-3 cursor-pointer">
+		<button on:click={() => resetList(statusType)} class="absolute top-6 right-3 cursor-pointer">
 			<TrashCan style="h-5 w-5" />
-		</div>
+		</button>
 	{/if}
 
 	{#each list as item (item.id)}
@@ -54,7 +53,8 @@
 	{/each}
 
 	<div>
-		<!-- svelte-ignore a11y-click-events-have-key-events -->
-		<label for="modal" class="btn btn-sm mt-1 ml-2" on:click={setCurrentStatus}>NEW ITEM 🔥</label>
+		<label for="modal">
+			<button class="btn btn-sm mt-1 ml-2" on:click={setCurrentStatus}> NEW ITEM 🔥</button></label
+		>
 	</div>
 </div>
