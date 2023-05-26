@@ -3,8 +3,8 @@
 declare global {
 	namespace NodeJS {
 		interface ProcessEnv {
-			readonly SUPABASE_APP: string;
-			readonly SUPABASE_ANON_KEY: string;
+			// readonly SUPABASE_APP: SupabaseClient;
+			// readonly SUPABASE_ANON_KEY: string;
 		}
 	}
 }
