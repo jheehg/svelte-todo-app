@@ -47,6 +47,7 @@
 				<span class="label-text">Title</span>
 			</label>
 			<input
+				type="text"
 				name="title"
 				id="title"
 				bind:value={title}
@@ -57,6 +58,7 @@
 				<span class="label-text">Content</span>
 			</label>
 			<input
+				type="text"
 				name="content"
 				id="content"
 				bind:value={content}
