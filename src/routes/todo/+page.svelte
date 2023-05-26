@@ -2,7 +2,7 @@
 	import InputForm from '$lib/components/InputForm.svelte';
 	import Modal from '$lib/components/Modal.svelte';
 	import TodoList from '$lib/components/TodoList.svelte';
-	import { isModalOpen, list } from '$lib/stores';
+	import { list } from '$lib/stores';
 	import type { ITodoItem, Status } from '$lib/types';
 	import { fetchTodo } from '$lib/utils/api';
 	import { onMount } from 'svelte';
