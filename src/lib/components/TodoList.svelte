@@ -52,9 +52,13 @@
 		<TodoItem {item} on:fetchTodo={fetchTodo} />
 	{/each}
 
-	<div>
-		<label for="modal">
-			<button class="btn btn-sm mt-1 ml-2" on:click={setCurrentStatus}> NEW ITEM 🔥</button></label
-		>
-	</div>
+	{#if statusType !== 'done'}
+		<div>
+			<label for="modal">
+				<button class="btn btn-sm mt-1 ml-2" on:click={setCurrentStatus}>
+					NEW ITEM 🔥</button
+				></label
+			>
+		</div>
+	{/if}
 </div>
