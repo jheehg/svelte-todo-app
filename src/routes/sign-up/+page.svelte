@@ -1,22 +1,29 @@
 <script lang="ts">
+	import { page } from '$app/stores';
 	import OauthLoginButton from '$lib/components/OauthLoginButton.svelte';
 	import { toast } from '$lib/stores';
 
 	let email: string;
 	let password: string;
+	let isLoading = false;
 
 	const createUser = async () => {
-		await fetch('/api/user/signUp', {
-			method: 'POST',
-			body: JSON.stringify({ email, password }),
-			headers: {
-				'content-type': 'application/json'
-			}
-		})
-			.then((response) => response.json())
-			.then(({ result, message }) => {
-				toast.showToast(message);
-			});
+		isLoading = true;
+		const { data, error } = await $page.data.supabase.auth
+			.signUp({
+				email,
+				password,
+				options: {
+					emailRedirectTo: 'http://localhost:5173/sign-in'
+				}
+			})
+			.finally(() => (isLoading = false));
+
+		if (error || !data?.user) {
+			toast.showToast('No User signed up');
+			return;
+		}
+		toast.showToast('Please confirm your email to sign in');
 	};
 </script>
 
@@ -31,7 +38,7 @@
 							<span class="label-text">Email</span>
 						</label>
 						<input
-							type="text"
+							type="email"
 							name="email"
 							id="email"
 							bind:value={email}
@@ -49,7 +56,7 @@
 							placeholder="Password here"
 							class="input input-bordered input-sm w-full"
 						/>
-						<button type="submit" class="btn btn-sm my-4">Sign Up</button>
+						<button type="submit" class="btn btn-sm my-4" class:loading={isLoading}>Sign Up</button>
 						<p>
 							Already have an account?<a href="/sign-in" class="ml-1 text-gray-600 font-bold"
 								>Login</a
