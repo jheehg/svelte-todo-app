@@ -11,7 +11,7 @@
 	<div class="flex-1" />
 	<div class="flex-none">
 		<ul class="menu menu-horizontal px-5">
-			<li><a href="#" on:click={signUpUser}>Sign Out</a></li>
+			<li><a href="#" on:click={signUpUser} class="font-semibold">Sign Out</a></li>
 		</ul>
 	</div>
 </div>
