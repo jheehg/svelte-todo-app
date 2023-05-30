@@ -109,7 +109,7 @@
 			{#if item.status === 'upcoming'}
 				<p>{item.content}</p>
 			{:else}
-				<p class={item?.is_completed ? 'line-through truncate' : 'truncate'}>
+				<p class="truncate" class:line-through={item?.is_completed}>
 					{#if !item.is_completed}
 						<button class="mr-1" on:click={() => toggleCompleted(item)}>⬜️</button>
 					{:else}
