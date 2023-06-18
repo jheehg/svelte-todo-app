@@ -1,6 +1,8 @@
 <script>
 	import { page } from '$app/stores';
 	import Google from '$lib/components/icons/Google.svelte';
+	import { PUBLIC_APP_URL } from '$env/static/public';
+
 	let isLoading = false;
 
 	const signInWithGoogle = async () => {
@@ -9,7 +11,7 @@
 		const { error } = await supabase.auth.signInWithOAuth({
 			provider: 'google',
 			options: {
-				redirectTo: 'http://localhost:5173/api/auth/callback'
+				redirectTo: `${PUBLIC_APP_URL}/api/auth/callback`
 			}
 		});
 	};

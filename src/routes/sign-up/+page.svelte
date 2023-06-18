@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/stores';
+	import { PUBLIC_APP_URL } from '$env/static/public';
 	import OauthLoginButton from '$lib/components/OauthLoginButton.svelte';
 	import { toast } from '$lib/stores';
 
@@ -14,7 +15,7 @@
 				email,
 				password,
 				options: {
-					emailRedirectTo: 'http://localhost:5173/sign-in'
+					emailRedirectTo: `${PUBLIC_APP_URL}/sign-in`
 				}
 			})
 			.finally(() => (isLoading = false));
